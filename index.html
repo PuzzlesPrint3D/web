@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Puzzle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #e0f7fa; /* Color de fondo */
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            margin-top: 20px; /* Espacio entre los botones */
+        }
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px; /* Espacio entre los items */
+            margin-top: 20px;
+        }
+        .puzzle-item {
+            background: white;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .puzzle-item img {
+            max-width: 150px; /* Ajusta el tamaño máximo de la imagen según tu preferencia */
+            height: auto; /* Mantiene la proporción */
+            border-radius: 5px;
+        }
+        .espacio-bajo {
+            margin-bottom: 20px; /* Ajusta el espacio según sea necesario */
+        }
+        .centrado {
+            text-align: center; /* Centra el contenido */
+            margin-bottom: 10px; /* Espaciado debajo */
+        }
+        .puzzle-enlace {
+            display: block; /* Asegura que el enlace esté en una nueva línea */
+            margin-top: 5px; /* Espacio superior del enlace */
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+<script>
+const puzzles = [
+    { nombre: 'Arma el corazón', retos: 120, soluciones: 120, retosPorPagina: 4, solucionesPorPagina: 16 },
+    { nombre: 'Arma el cubo 3x3', retos: 80, soluciones: 80, retosPorPagina: 4, solucionesPorPagina: 4 },
+    { nombre: 'Arma el cubo 4x4', retos: 80, soluciones: 80, retosPorPagina: 4, solucionesPorPagina: 4 },
+    { nombre: 'Arma los robots', retos: 48, soluciones: 48, retosPorPagina: 4, solucionesPorPagina: 12 },
+    { nombre: 'Bajar las 8 bolas', retos: 64, soluciones: 64, retosPorPagina: 1, solucionesPorPagina: 1 },
+    { nombre: 'Coloca los 10 números', retos: 120, soluciones: 120, retosPorPagina: 4, solucionesPorPagina: 9 },
+    { nombre: 'Conecta el circuito', retos: 120, soluciones: 120, retosPorPagina: 6, solucionesPorPagina: 6 },
+    { nombre: 'Conecta los engranajes', retos: 120, soluciones: 120, retosPorPagina: 4, solucionesPorPagina: 16 },
+    { nombre: 'Conectados', retos: 120, soluciones: 120, retosPorPagina: 4, solucionesPorPagina: 16 },
+    { nombre: 'Cubo rompecabeza', retos: 48, soluciones: 48, retosPorPagina: 4, solucionesPorPagina: 2 },
+    { nombre: 'Encierra los gatos', retos: 60, soluciones: 60, retosPorPagina: 1, solucionesPorPagina: 1 },
+    { nombre: 'Enfocar', retos: 120, soluciones: 120, retosPorPagina: 6, solucionesPorPagina: 6 },
+    { nombre: 'Escapa de atlantis', retos: 60, soluciones: 60, retosPorPagina: 4, solucionesPorPagina: 4 },
+    { nombre: 'Escapa del templo', retos: 60, soluciones: 60, retosPorPagina: 4, solucionesPorPagina: 6 },
+    { nombre: 'Esquiva los meteoritos', retos: 60, soluciones: 60, retosPorPagina: 4, solucionesPorPagina: 4 },
+    { nombre: 'Estrellas fugaces', retos: 80, soluciones: 80, retosPorPagina: 1, solucionesPorPagina: 4 },
+    { nombre: 'Flechas', retos: 120, soluciones: 120, retosPorPagina: 6, solucionesPorPagina: 6 },
+    { nombre: 'GPS 1 ruta', retos: 60, soluciones: 60, retosPorPagina: 4, solucionesPorPagina: 12 },
+    { nombre: 'GPS 2 rutas', retos: 60, soluciones: 60, retosPorPagina: 4, solucionesPorPagina: 12 },
+    { nombre: 'Los ratones y el queso', retos: 48, soluciones: 48, retosPorPagina: 2, solucionesPorPagina: 6 },
+    { nombre: 'XOXOXO', retos: 120, soluciones: 120, retosPorPagina: 6, solucionesPorPagina: 6 }
+];
+
+function mostrarInicio() {
+    const main = document.getElementById('main');
+    main.innerHTML = `
+        <h1 style="font-size: 72px;">
+            <img src="images/icono.png" alt="Icono" style="width: 100px; height: auto; vertical-align: middle; margin-right: 10px;">
+            <font color="#D4AF37"> PUZZLES PRINT 3D
+        </h1>
+    `;
+
+    const container = document.createElement('div');
+    container.className = 'puzzle-container';
+
+    puzzles.forEach(puzzle => {
+        const item = document.createElement('div');
+        item.className = 'puzzle-item';
+        item.innerHTML = `
+        <div class="centrado">
+            <img src="puzzles/${puzzle.nombre}.jpg" alt="${puzzle.nombre}">
+            <a href="#" onclick="mostrarPuzzle('${puzzle.nombre}')" class="puzzle-enlace">${puzzle.nombre}</a>
+        </div>
+        `;
+        container.appendChild(item);
+    });
+
+    main.appendChild(container);
+}
+
+const descripciones = {
+    'Bajar las 8 bolas': '<font color="#D4AF37"> <b> <big>DESCRIPCION</big> </b>  </font> <p> <br> Coloca el laberinto correctamente para que llegue el número adecuado de canicas a cada una de las 5 metas….¿serás capaz de lograrlo? <p> <br> <b>¿Cómo se juega?</b> <p> <br> - Elige una tarjeta con un reto y coloca en el tablero las piezas fijas tal y como se indica en la tarjeta. <br> - En la tarjeta también se indica un número en cada meta. Este número es la cantidad de bolas que tiene que llegar a esa meta. <br> - Piensa en qué caminos recorrerán las bolas y coloca en el tablero el resto de piezas. <br> - Retira despacio la barrera deslizándola hacia la derecha para soltar las bolas. <br> - Si las piezas están colocadas correctamente, la cantidad de bolas en cada meta se corresponderá con los números indicados en la tarjeta.',
+    // Otras descripciones...
+};
+
+function mostrarPuzzle(nombre) {
+    const puzzle = puzzles.find(p => p.nombre === nombre);
+    const main = document.getElementById('main');
+    const imgPath = `puzzles/${nombre}.jpg`;
+    const descripcion = descripciones[nombre]; // Obtén la descripción del puzzle
+
+    main.innerHTML = `
+        <h1>${nombre}</h1>
+        <div style="display: flex; justify-content: center; align-items: flex-start;">
+            <img src="${imgPath}" alt="${nombre}" class="espacio-bajo" style="max-width: 300px; margin-right: 20px;">
+            <div style="max-width: 1500px; text-align: left;">
+                <p>${descripcion}</p> <!-- Muestra la descripción del puzzle -->
+            </div>
+        </div>
+        <br>
+        <input type="text" id="buscador-reto" placeholder="Buscar reto..." />
+        <button onclick="buscarReto('${nombre}', ${puzzle.retos})">Buscar</button> <!-- Botón "Buscar" -->
+        <button onclick="mostrarInicio()">Inicio</button>
+    `;
+
+    // Agregar evento para buscar retos con Enter
+    document.getElementById('buscador-reto').addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            buscarReto(nombre, puzzle.retos);
+        }
+    });
+}
+
+function buscarReto(nombre, cantidad) {
+    const input = document.getElementById('buscador-reto');
+    const filter = input.value.trim(); // Obtener el valor ingresado, recortando espacios
+
+    if (filter) {
+        const numeroReto = parseInt(filter);
+        if (numeroReto >= 1 && numeroReto <= cantidad) {
+            mostrarImagen(nombre, numeroReto, 'reto');
+        } else {
+            alert('Número de reto fuera de rango. Intente nuevamente.');
+        }
+    }
+}
+
+function mostrarImagen(nombre, num, tipo) {
+    const main = document.getElementById('main');
+    const puzzle = puzzles.find(p => p.nombre === nombre);
+    const retosPorPagina = puzzle.retosPorPagina || 4; // Retos por página del puzzle
+    const solucionesPorPagina = puzzle.solucionesPorPagina || 4; // Soluciones por página del puzzle
+
+    // Calcular el grupo actual y los límites de reto
+    const groupIndex = Math.floor((num - 1) / retosPorPagina);
+    const start = groupIndex * retosPorPagina + 1;
+    const end = Math.min(start + retosPorPagina - 1, puzzle.retos);
+
+    // Definir el título basado en el número de retos en la página
+    let titulo;
+    if (retosPorPagina === 1) {
+        titulo = `Reto ${num} de ${nombre}`;
+    } else {
+        titulo = `Reto del ${start} al ${end} de ${nombre}`;
+    }
+
+    if (tipo === 'solucion') {
+        // Modificar el título para la solución
+        const solucionGroupIndex = Math.floor((num - 1) / solucionesPorPagina);
+        const solucionStart = solucionGroupIndex * solucionesPorPagina + 1;
+        const solucionEnd = Math.min(solucionStart + solucionesPorPagina - 1, puzzle.soluciones);
+
+        // Ajustar el título si solo hay una solución por página
+        const solucionTitulo = solucionesPorPagina === 1 
+            ? `Solución ${num} de ${nombre}` 
+            : `Solución del ${solucionStart} al ${solucionEnd} de ${nombre}`;
+
+        main.innerHTML = `
+            <h2>${solucionTitulo}</h2>
+            <img src="soluciones/${nombre}_${tipo}${num}.jpg" alt="solucion ${num}" class="${tipo}-imagen" style="width: 600px;" />
+            <br><br>
+            <button onclick="mostrarImagen('${nombre}', ${num}, 'reto')">Ir al Reto</button>
+            <button onclick="mostrarPuzzle('${nombre}')">Ir a Atrás</button>
+            <button onclick="mostrarInicio()">Inicio</button>
+        `;
+    } else {
+        // Lógica para mostrar los retos
+        const anterior = groupIndex > 0 ? (groupIndex - 1) * retosPorPagina + 1 : null; // Primer reto del grupo anterior
+        const siguiente = (groupIndex + 1) * retosPorPagina + 1 <= puzzle.retos ? (groupIndex + 1) * retosPorPagina + 1 : null; // Primer reto del grupo siguiente
+
+        main.innerHTML = `
+            <h2>${titulo}</h2>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="mostrarImagen('${nombre}', ${anterior || 1}, 'reto')" ${anterior ? '' : 'disabled'}>Reto Anterior</button>
+                <img src="retos/${nombre}_${tipo}${num}.jpg" alt="${tipo} ${num}" class="${tipo}-imagen" style="width: 600px;" />
+                <button onclick="mostrarImagen('${nombre}', ${siguiente || puzzle.retos}, 'reto')" ${siguiente ? '' : 'disabled'}>Siguiente Reto</button>
+            </div>
+            <br>
+            <div>
+                <button onclick="mostrarImagen('${nombre}', ${num}, 'solucion')">Ver Solución</button>
+                <button onclick="mostrarPuzzle('${nombre}')">Ir a Atrás</button>
+                <button onclick="mostrarInicio()">Inicio</button>
+            </div>
+            <br>
+            <div style="text-align: right; margin: 0;">
+                <div style="display: inline-block;">
+                    <input type="text" id="buscador-reto" placeholder="Buscar reto..." />
+                    <button style="padding: 5px 10px; font-size: 12px;" onclick="buscarReto('${nombre}', ${puzzle.retos})">Buscar</button>
+                </div>
+            </div>
+        `;
+
+        // Agregar evento para buscar retos con Enter
+        document.getElementById('buscador-reto').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                buscarReto(nombre, puzzle.retos);
+            }
+        });
+    }
+}
+
+// Cargar pantalla inicial al abrir
+mostrarInicio();
+</script>
+</body>
+</html>
